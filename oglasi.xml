@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" standalone="no" ?>
+<!DOCTYPE Oglasnik SYSTEM "oglasnik.dtd">
+<Oglasnik xmlns="http://www.w3schools.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.w3schools.com adresar.xsd">
+	<Oglas>
+		<Kategorija>Tehnika</Kategorija>
+		<DatumIsteka>
+            <Dan>21</Dan>
+            <Mesec>1</Mesec>
+            <Godina>2023</Godina>
+        </DatumIsteka>
+		<Cena tip="din">30000</Cena>
+		<TekstOglasa>Najbolji kvalitet televizora, sto se tice cene i kvaliteta</TekstOglasa>
+		<Oznaka>
+			<Tag>Tehnika</Tag>
+			<Tag>Televizor</Tag>
+			<Tag>Prodaja</Tag>
+		</Oznaka>
+		<Email tip="privatni">tvprodaja1@gmail.com</Email>
+		<Email tip="sluzbeni">servistelevizora@gmail.com</Email>
+	</Oglas>
+	<Oglas>
+		<Kategorija>Odeca</Kategorija>
+		<DatumIsteka>
+            <Dan>15</Dan>
+            <Mesec>11</Mesec>
+            <Godina>2022</Godina>
+        </DatumIsteka>
+		<Cena tip="eur">120</Cena>
+		<TekstOglasa>Adidas patike, najnoviji model</TekstOglasa>
+		<Oznaka>
+			<Tag>Odeca</Tag>
+			<Tag>Patike</Tag>
+		</Oznaka>
+		<Email tip="privatni">obucadjak@gmail.com</Email>
+	</Oglas>
+	<Oglas>
+		<Kategorija>Tehnika</Kategorija>
+		<DatumIsteka>
+            <Dan>10</Dan>
+            <Mesec>10</Mesec>
+            <Godina>2022</Godina>
+        </DatumIsteka>
+		<Cena>75000</Cena>
+		<TekstOglasa>QLED SAMSUNG televizor</TekstOglasa>
+		<Oznaka>
+			<Tag>Tehnika</Tag>
+			<Tag>Televizor</Tag>
+		</Oznaka>
+		<Email tip="sluzbeni">servistelevizora@gmail.com</Email>
+	</Oglas>
+</Oglasnik>
