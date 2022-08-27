@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/style.css">
+    <title>Oglasi za kupovinu</title>
+</head>
+
+<body>
+    <div class="col-12">
+        <h2>Oglasi za kupovinu</h2>
+        <label for="">Pretrazi oglase: </label>
+
+        <input type="text" oninput="filtrirajOglas(this)">
+        <table id="tabelaOglasi">
+            <thead>
+                <th>Id</th>
+                <th>Kategorija</th>
+                <th>Datum isteka</th>
+                <th>Cena</th>
+                <th>Tekst oglasa</th>
+                <th>Tag</th>
+                <th>Email oglasivaca</th>
+                <th>Azuriraj oglas</th>
+                <th>Obrisi oglas</th>
+            </thead>
+            <tbody id="tabelaOglasiTelo">
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-12">
+        <div class="col-6">
+            <h2>Forma za dodavanje oglasa</h2>
+
+            <label for="kategorija">Kategorija:</label>
+            <input type="text" name="kategorija" id="kategorija"> <br>
+
+            <label for="datumIsteka">Datum isteka:</label>
+            <input type="text" name="datumIsteka" id="datumIsteka"> <br>
+
+            <label for="Cena">Cena:</label>
+            <input type="text" name="cena" id="cena"> <br>
+
+            <label for="tekstOglasa">Tekst oglasa: </label>
+            <input type="text" name="tekstOglasa" id="tekstOglasa"> <br>
+
+            <label for="tag">Tag:</label>
+            <input type="text" name="tag" id="tag"> <br>
+
+            <label for="emailOglasivaca">Email oglasivaca:</label>
+            <input type="text" name="emailOglasivaca" id="emailOglasivaca"> <br>
+
+            <button id="dodajOglas">Dodaj oglas</button>
+        </div>
+
+        <div class="col-6" id="divazuriraj">
+            <h2>Forma za azuriranje oglasa</h2>
+
+            <label for="Id">Id:</label>
+            <input type="text" name="" id="idAZ" readonly> <br>
+
+            <label for="kategorija">Kategorija:</label>
+            <input type="text" name="kategorijaAZ" id="kategorijaAZ"> <br>
+
+            <label for="datumIsteka">Datum isteka:</label>
+            <input type="text" name="datumIstekaAZ" id="datumIstekaAZ"> <br>
+
+            <label for="Cena">Cena:</label>
+            <input type="text" name="cenaAZ" id="cenaAZ"> <br>
+
+            <label for="tekstOglasa">Tekst oglasa: </label>
+            <input type="text" name="tekstOglasaAZ" id="tekstOglasaAZ"> <br>
+
+            <label for="tag">Tag:</label>
+            <input type="text" name="tagAZ" id="tagAZ"> <br>
+
+            <label for="emailOglasivaca">Email oglasivaca:</label>
+            <input type="text" name="emailOglasivacaAZ" id="emailOglasivacaAZ"> <br>
+
+            <button id="azurirajOglas">Azuriraj oglas</button>
+        </div>
+    </div>
+
+    <script>
+        var tabelaOglasiTelo = document.getElementById("tabelaOglasiTelo");
+        var dodajOglasDugme = document.getElementById("dodajOglas");
+        var azurirajOglasDugme = document.getElementById("azurirajOglas");
+
+        window.onload = () => {
+            console.log('Ocitavanje');
+            procitajSveOglase();
+        }
+
+        dodajOglasDugme.onclick = () => {
+            var id = document.getElementById("id");
+            var kategorija = document.getElementById("kategorija");
+            var datum = document.getElementById("datumIsteka");
+            var cena = document.getElementById("cena");
+            var tekstOglasa = document.getElementById("tekstOglasa");
+            var tag = document.getElementById("tag");
+            var email = document.getElementById("emailOglasivaca");
+
+            var oglas = {
+                "kategorija": kategorija.value,
+                "datum": datum.value,
+                "cena": cena.value,
+                "tekstOglasa": tekstOglasa.value,
+                "tag": tag.value,
+                "email": email.value
+            };
+
+            // kategorija.value = "";
+            // datum.value = "";
+            // cena.value = "";
+            // tekstOglasa.value = "";
+            // tag.value = "";
+            // email.value = "";
+
+            var request = {
+                method: "POST",
+                body: JSON.stringify(oglas),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            fetch('http://localhost:3000/oglasi', request);
+
+            obrisiTabeluTelo();
+            location.reload();
+        }
+
+        function procitajSveOglase() {
+            setTimeout(() => {}, 100);
+            fetch('http://localhost:3000/oglasi')
+                .then(res => res.text())
+                .then(text => {
+                    var oglasi = JSON.parse(text);
+                    console.log(oglasi);
+                    azurirajTabelu(oglasi);
+                });
+        }
+
+        function azurirajTabelu(oglasi) {
+            oglasi.forEach(oglas => {
+                tabelaOglasiTelo.innerHTML +=
+                    '<tr>' +
+                    '<td>' + oglas.id + '</td>' +
+                    '<td>' + oglas.kategorija + '</td>' +
+                    '<td>' + oglas.datum + '</td>' +
+                    '<td>' + oglas.cena + '</td>' +
+                    '<td>' + oglas.tekstOglasa + '</td>' +
+                    '<td>' + oglas.tag + '</td>' +
+                    '<td>' + oglas.email + '</td>' +
+                    '<td> <button id=' + oglas.id + ' onclick=izmeniOglas(this)> Izmeni </button> </td>' +
+                    '<td> <button id=' + oglas.id + ' onclick=obrisiOglas(this)> Obrisi </button> </td>' +
+                    '</tr>';
+            });
+        }
+
+        function obrisiTabeluTelo() {
+            var ttelo = document.getElementById("tabelaOglasiTelo");
+
+            ttelo.innerHTML = "";
+        }
+
+        function izmeniOglas(button) {
+            var idoglasa = button.id;
+            fetch('http://localhost:3000/oglasi/' + idoglasa)
+                .then(res => res.text())
+                .then(oglas => JSON.parse(oglas))
+                .then(oglas => popuniTabelu(oglas));
+        }
+
+        function popuniTabelu(oglas) {
+            var azurirajDiv = document.getElementById('divazuriraj').style.visibility = 'visible'
+
+            var id = document.getElementById("idAZ");
+            var kategorija = document.getElementById("kategorijaAZ");
+            var datum = document.getElementById("datumIstekaAZ");
+            var cena = document.getElementById("cenaAZ");
+            var tekstOglasa = document.getElementById("tekstOglasaAZ");
+            var tag = document.getElementById("tagAZ");
+            var email = document.getElementById("emailOglasivacaAZ");
+
+            id.value = oglas.id;
+            kategorija.value = oglas.kategorija;
+            datum.value = oglas.datum;
+            cena.value = oglas.cena;
+            tekstOglasa.value = oglas.tekstOglasa;
+            tag.value = oglas.tag;
+            email.value = oglas.email;
+        }
+
+        azurirajOglasDugme.onclick = () => {
+            var id = document.getElementById("idAZ");
+            var kategorija = document.getElementById("kategorijaAZ");
+            var datum = document.getElementById("datumIstekaAZ");
+            var cena = document.getElementById("cenaAZ");
+            var tekstOglasa = document.getElementById("tekstOglasaAZ");
+            var tag = document.getElementById("tagAZ");
+            var email = document.getElementById("emailOglasivacaAZ");
+
+            var oglas = {
+                "kategorija": kategorija.value,
+                "datum": datum.value,
+                "cena": cena.value,
+                "tekstOglasa": tekstOglasa.value,
+                "tag": tag.value,
+                "email": email.value
+            };
+
+            var request = {
+                method: "PUT",
+                body: JSON.stringify(oglas),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            console.log(request);
+
+            var idoglasa = id.value; 
+            fetch('http://localhost:3000/oglasi/' + idoglasa, request);
+
+            obrisiTabeluTelo();
+            location.reload();
+        }
+
+        function obrisiOglas(button) {
+            var idoglasa = button.id;
+
+            var request = {
+                method: "DELETE"
+            };
+
+            fetch('http://localhost:3000/oglasi/' + idoglasa, request);
+
+            obrisiTabeluTelo();
+            location.reload();
+        }
+
+        function filtrirajOglas(input){
+            var inputText = input.value;
+
+            if (inputText === "") {
+                obrisiTabeluTelo();
+                location.reload();
+                return;
+            }
+
+            fetch('http://localhost:3000/oglasi/filter/' + inputText)
+                .then(res => res.text())
+                .then(oglas => JSON.parse(oglas))
+                .then(oglas => {
+                    obrisiTabeluTelo();
+                    azurirajTabelu(oglas)
+                });    
+        }
+    </script>
+</body>
+
+</html>
